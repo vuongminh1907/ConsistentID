@@ -20,7 +20,8 @@ from attention import Consistent_IPAttProcessor, Consistent_AttProcessor, Facial
 ### Model can be imported from https://github.com/zllrunning/face-parsing.PyTorch?tab=readme-ov-file
 ### We use the ckpt of 79999_iter.pth: https://drive.google.com/open?id=154JgKpzCPW82qINcVieuPH3fZ2e0P812
 ### Thanks for the open source of face-parsing model.
-from models import BiSeNet
+#from models import BiSeNet
+from models.BiSeNet.model import *
 
 PipelineImageInput = Union[
     PIL.Image.Image,
@@ -65,7 +66,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         ### BiSeNet
         self.bise_net = BiSeNet(n_classes = 19)
         self.bise_net.cuda()
-        self.bise_net_cp='./models/BiSeNet_pretrained_for_ConsistentID.pth' # Import BiSeNet model
+        self.bise_net_cp='79999_iter.pth' # Import BiSeNet model
         self.bise_net.load_state_dict(torch.load(self.bise_net_cp))
         self.bise_net.eval()
         # Colors for all 20 parts

@@ -10,28 +10,36 @@ import sys
 device = "cuda"
 base_model_path = "SG161222/Realistic_Vision_V6.0_B1_noVAE"
 consistentID_path = "./ConsistentID_model_facemask_pretrain_50w" # pretrained ConsistentID model
-
+controlnet_path = "ConsistentID_model_facemask_pretrain_50w.bin" 
 # Gets the absolute path of the current script
 script_directory = os.path.dirname(os.path.realpath(__file__))
 
 ### Load base model
 pipe = ConsistentIDStableDiffusionPipeline.from_pretrained(
     base_model_path, 
-    torch_dtype=torch.float16, 
-    use_safetensors=True, 
-    variant="fp16"
+    torch_dtype=torch.float16
 ).to(device)
 
+
+'''
 ### Load consistentID_model checkpoint
 pipe.load_ConsistentID_model(
     os.path.dirname(consistentID_path),
     subfolder="",
     weight_name=os.path.basename(consistentID_path),
     trigger_word="img",
-)     
+) 
+'''
+pipe.load_ConsistentID_model(
+    pretrained_model_name_or_path_or_dict=controlnet_path,
+    weight_name="", 
+    subfolder="",
+    trigger_word="img",
+)
 
 pipe.scheduler = EulerDiscreteScheduler.from_config(pipe.scheduler.config)
-
+pipe.safety_checker = None
+pipe.requires_safety_checker = False
 # lora_model_name = os.path.basename(lora_path)
 # pipe.load_lora_weights(os.path.dirname(lora_path), weight_name=lora_model_name) # trigger: HTA
 ### If there's a specific adapter name defined for this LoRA, use it; otherwise, the default might work.
@@ -42,9 +50,9 @@ pipe.scheduler = EulerDiscreteScheduler.from_config(pipe.scheduler.config)
 # pipe.fuse_lora()
 
 ### input image TODO
-select_images = load_image(script_directory+"/images/person.jpg")
+select_images = load_image("image_6487327 (1) (1).jpg")
 # hyper-parameter
-num_steps = 50
+num_steps = 80
 merge_steps = 30
 # Prompt
 prompt = "A man, in a forest, adventuring"
@@ -69,6 +77,6 @@ images = pipe(
     generator=generator,
 ).images[0]
 
-images.save(script_directory+"/images/sample.jpg")
+images.save("sample.jpg")
 
 
