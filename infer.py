@@ -10,7 +10,7 @@ import sys
 device = "cuda"
 base_model_path = "SG161222/Realistic_Vision_V6.0_B1_noVAE"
 consistentID_path = "./ConsistentID_model_facemask_pretrain_50w" # pretrained ConsistentID model
-controlnet_path = "ConsistentID_model_facemask_pretrain_50w.bin" 
+controlnet_path = "ConsistentID-v1.bin" 
 # Gets the absolute path of the current script
 script_directory = os.path.dirname(os.path.realpath(__file__))
 

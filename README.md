@@ -100,7 +100,7 @@ Ensure that the workspace is the root directory of the project.
 
 ```setup
 pip install -r requirements.txt
-wget 'https://huggingface.co/JackAILab/ConsistentID/resolve/main/ConsistentID_model_facemask_pretrain_50w.bin'
+wget 'https://huggingface.co/JackAILab/ConsistentID/resolve/main/ConsistentID-v1.bin'
 wget 'https://huggingface.co/vuongminhkhoi4/consistentID/resolve/main/79999_iter.pth'
 python infer.py
 ```
